@@ -1,6 +1,6 @@
 # ICLR 2027 reviewers vs. AI-sounding papers
 
-**Live page:** https://iclr27.trung-dt.com/
+**Live page:** https://trung-dt.com/iclr-2027-ai-vs-reviews/
 
 We matched 40,449 ICLR 2027 submissions to their scores from an AI-text detector
 ([Open Text Detector](https://opentextdetector.com/?collection=iclr%2F2027&sort=score)) and to

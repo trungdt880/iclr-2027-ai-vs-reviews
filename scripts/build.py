@@ -1,6 +1,6 @@
 import json, sys, datetime
 tpl, res, out = sys.argv[1:4]
-SITE = 'https://iclr27.trung-dt.com/'
+SITE = 'https://trung-dt.com/iclr-2027-ai-vs-reviews/'
 REPO = 'https://github.com/trungdt880/iclr-2027-ai-vs-reviews'
 d = json.load(open(res)); d['built_at'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
 js = json.dumps(d, separators=(',', ':'), ensure_ascii=False).replace('</', '<\\/')
