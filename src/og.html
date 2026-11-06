@@ -1,0 +1,50 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #fff; color: #16181d;
+  font-family: "STIX Two Text", "Times New Roman", serif; font-variant-numeric: lining-nums; }
+.wrap { position: absolute; inset: 0; padding: 30px 56px 40px; display: grid; grid-template-columns: 1fr 1.05fr; gap: 36px; }
+.run { position: absolute; left: 56px; right: 56px; top: 22px; border-bottom: 1px solid #d6d8de; padding-bottom: 8px;
+  font-style: italic; font-size: 19px; color: #4a4f5c; }
+.left { padding-top: 70px; }
+h1 { font-size: 52px; line-height: 1.08; font-weight: 600; margin: 0; letter-spacing: -0.012em; }
+p { font-size: 22px; line-height: 1.4; color: #4a4f5c; margin: 22px 0 0; }
+.right { padding-top: 84px; }
+svg text { font-family: inherit; fill: #4a4f5c; font-size: 17px; }
+</style></head>
+<body>
+<div class="run">Not under review as a conference paper at ICLR 2027</div>
+<div class="wrap">
+  <div class="left">
+    <h1 id="t"></h1>
+    <p id="s"></p>
+  </div>
+  <div class="right"><svg id="c" width="560" height="460" viewBox="0 0 560 460"></svg></div>
+</div>
+<script id="data" type="application/json">/*DATA*/</script>
+<script>
+const D = JSON.parse(document.getElementById("data").textContent), V = D.ventiles, H = D.hero;
+const r = H.top5.ones / H.bottom60.ones;
+document.getElementById("t").innerHTML = `ICLR 2027 reviewers gave the most <span style="white-space:nowrap">AI-sounding</span> papers ${r.toFixed(1)}× as many 1s`;
+document.getElementById("s").textContent = `${D.n_joined.toLocaleString("en-US")} papers matched to AI-detector scores. Flat for 60% of papers, then a cliff.`;
+const svg = document.getElementById("c"), NS = "http://www.w3.org/2000/svg";
+const el = (t, a) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); svg.appendChild(n); return n; };
+const m = { l: 44, r: 70, t: 20, b: 60 }, W = 560, Hh = 460, iw = W - m.l - m.r, ih = Hh - m.t - m.b, lo = 1.65, hi = 2.25;
+const X = p => m.l + iw * p / 100, Y = v => m.t + ih * (1 - (v - lo) / (hi - lo));
+for (let v = 1.7; v <= 2.21; v += 0.1) { el("line", { x1: m.l, x2: m.l + iw, y1: Y(v), y2: Y(v), stroke: "#eceef2" }); el("text", { x: m.l - 8, y: Y(v) + 6, "text-anchor": "end" }).textContent = v.toFixed(1); }
+el("line", { x1: m.l, x2: m.l, y1: m.t, y2: m.t + ih, stroke: "#7a7f8c" });
+el("line", { x1: m.l, x2: m.l + iw, y1: m.t + ih, y2: m.t + ih, stroke: "#7a7f8c" });
+el("text", { x: m.l, y: Hh - 26 }).textContent = "← reads least like an LLM";
+el("text", { x: m.l + iw, y: Hh - 26, "text-anchor": "end" }).textContent = "most →";
+el("text", { x: m.l + iw / 2, y: Hh - 2, "text-anchor": "middle", fill: "#16181d" }).textContent = "Average review rating, papers ranked by AI score";
+const px = V.map(v => X((v.k - .5) * 5)), py = V.map(v => Y(v.mean));
+const path = (a, b) => px.slice(a, b + 1).map((x, i) => `${i ? "L" : "M"}${x},${py[a + i]}`).join("");
+el("path", { d: path(0, 11), fill: "none", stroke: "#16181d", "stroke-width": 3, "stroke-linejoin": "round" });
+el("path", { d: path(11, 19), fill: "none", stroke: "#c8102e", "stroke-width": 5, "stroke-linejoin": "round", "stroke-linecap": "round" });
+el("circle", { cx: px[19], cy: py[19], r: 7, fill: "#c8102e", stroke: "#fff", "stroke-width": 2 });
+const t = el("text", { x: px[19] + 12, y: py[19] + 12, fill: "#c8102e", "font-size": 40, "font-weight": 700 }); t.textContent = V[19].mean.toFixed(2);
+const f = el("text", { x: X(30), y: Math.min(...py.slice(0, 12)) - 18, "text-anchor": "middle", fill: "#16181d", "font-style": "italic", "font-size": 22 }); f.textContent = "flat";
+const c = el("text", { x: X(74), y: Y(1.98) + 34, "text-anchor": "end", fill: "#c8102e", "font-style": "italic", "font-size": 22 }); c.textContent = "then the cliff";
+</script>
+</body></html>

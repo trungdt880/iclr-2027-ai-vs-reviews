@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-Sounding ICLR Papers</title>
+<meta name="description" content="We matched 40,449 ICLR 2027 submissions to AI-text detector scores. The 5% that read most like an LLM got 2.7× as many 1s from reviewers.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ICLR 2027 reviewers gave the most AI-sounding papers 2.7× as many 1s">
+<meta property="og:description" content="40,449 submissions matched to AI-detector scores. For 60% of papers it makes no difference. For the top 5%, it's a cliff.">
+<meta property="og:image" content="https://iclr27.trung-dt.com/og.png">
+<meta property="og:url" content="https://iclr27.trung-dt.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ICLR 2027 reviewers gave the most AI-sounding papers 2.7× as many 1s">
+<meta name="twitter:description" content="40,449 submissions matched to AI-detector scores. For 60% of papers it makes no difference. For the top 5%, it's a cliff.">
+<meta name="twitter:image" content="https://iclr27.trung-dt.com/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --paper: #ffffff; --ink: #16181d; --ink-2: #4a4f5c; --ink-3: #7a7f8c;
+  --rule: #d6d8de; --grid: #eceef2; --band: rgba(22,24,29,.09);
+  --red: #c8102e; --red-band: rgba(200,16,46,.13); --empty: #e4e6eb;
+  --chip: #f4f5f7;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #131418; --ink: #eceef2; --ink-2: #b4b8c3; --ink-3: #8a8f9b;
+    --rule: #34363e; --grid: #23252b; --band: rgba(236,238,242,.10);
+    --red: #ff5c70; --red-band: rgba(255,92,112,.18); --empty: #2c2e35;
+    --chip: #1d1f24;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #131418; --ink: #eceef2; --ink-2: #b4b8c3; --ink-3: #8a8f9b;
+  --rule: #34363e; --grid: #23252b; --band: rgba(236,238,242,.10);
+  --red: #ff5c70; --red-band: rgba(255,92,112,.18); --empty: #2c2e35;
+  --chip: #1d1f24;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink);
+  font-family: "STIX Two Text", "STIX Two", "Times New Roman", Georgia, serif;
+  font-size: 18px; line-height: 1.6; font-variant-numeric: lining-nums; }
+.page { max-width: 760px; margin: 0 auto; padding: 0 16px 72px; }
+.wide { max-width: 980px; margin-left: auto; margin-right: auto; }
+
+/* running header, as on a paper's first page */
+.runhead { max-width: 980px; margin: 0 auto; padding: 14px 16px 8px; display: flex; justify-content: space-between;
+  align-items: center; gap: 12px; border-bottom: 1px solid var(--rule); font-size: 14px; color: var(--ink-2); }
+.runhead i { font-style: italic; }
+.actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.btn { font: inherit; font-size: 14px; color: var(--ink); background: var(--chip); border: 1px solid var(--rule);
+  border-radius: 999px; padding: 3px 12px; cursor: pointer; text-decoration: none; white-space: nowrap; line-height: 1.5; }
+.btn:hover { border-color: var(--ink-3); }
+.btn:focus-visible, a:focus-visible, summary:focus-visible, svg [tabindex]:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+/* title block */
+.titleblock { text-align: center; padding: 56px 0 8px; }
+h1 { font-size: clamp(30px, 5.4vw, 52px); line-height: 1.1; font-weight: 600; margin: 0 auto; max-width: 23ch;
+  letter-spacing: -0.012em; text-wrap: balance; }
+.byline { margin: 22px 0 0; font-size: 16px; color: var(--ink-2); }
+.byline i { font-style: italic; }
+.byline .self { color: var(--red); font-weight: 700; }
+
+.abstract { max-width: 600px; margin: 40px auto 0; font-size: 17px; line-height: 1.6; }
+.abstract h2 { text-align: center; font-size: 17px; font-weight: 700; margin: 0 0 8px; }
+.abstract p { margin: 0; }
+
+h2.sec { font-size: 22px; font-weight: 700; margin: 64px 0 10px; letter-spacing: -0.005em; }
+p { margin: 0 0 14px; }
+@media (min-width: 640px) { .page p.just, .abstract p { text-align: justify; hyphens: auto; } }
+
+figure { margin: 44px auto 0; }
+figcaption { font-size: 16px; line-height: 1.5; color: var(--ink); margin-top: 12px; max-width: 760px; margin-left: auto; margin-right: auto; }
+figcaption b { font-weight: 700; }
+figcaption .m { color: var(--ink-2); }
+
+svg { display: block; overflow: visible; }
+svg text { fill: var(--ink-2); font-family: inherit; font-size: 13px; font-variant-numeric: tabular-nums lining-nums; }
+svg text.t-ink { fill: var(--ink); }
+svg text.t-red { fill: var(--red); font-weight: 700; }
+svg text.ann { fill: var(--ink); font-style: italic; font-size: 16px; }
+svg text.ann.red { fill: var(--red); }
+svg text.big { font-size: 40px; font-weight: 600; fill: var(--ink); }
+svg text.big.red { fill: var(--red); }
+.axis { stroke: var(--ink-3); stroke-width: 1; }
+.gridline { stroke: var(--grid); stroke-width: 1; }
+.ref { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 3 4; }
+.line-ink { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.line-red { fill: none; stroke: var(--red); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+.band-ink { fill: var(--band); }
+.band-red { fill: var(--red-band); }
+.dot-red { fill: var(--red); stroke: var(--paper); stroke-width: 2; }
+.dot-ink { fill: var(--ink); stroke: var(--paper); stroke-width: 2; }
+.guide { stroke: var(--ink-3); stroke-width: 1; }
+.hit { fill: transparent; cursor: crosshair; }
+.cell { fill: var(--empty); }
+.cell.on { fill: var(--red); }
+.whisk { stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; }
+.zero { stroke: var(--ink-3); stroke-width: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .draw { animation: draw 1.4s cubic-bezier(.55,.05,.35,1) .35s both; }
+  @keyframes draw { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+  .pop { animation: pop .3s ease-out 1.7s both; }
+  @keyframes pop { from { opacity: 0; } to { opacity: 1; } }
+}
+
+/* table 1, booktabs */
+.tbl { overflow-x: auto; margin: 0 auto; -webkit-overflow-scrolling: touch; }
+table.bk { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums lining-nums; }
+table.bk caption { caption-side: top; text-align: left; font-size: 16px; line-height: 1.5; padding-bottom: 10px; }
+table.bk thead tr:first-child th { border-top: 2px solid var(--ink); }
+table.bk thead th { border-bottom: 1px solid var(--ink); font-weight: 600; font-size: 15px; padding: 8px 10px; vertical-align: bottom; }
+table.bk td { padding: 9px 10px; font-size: 19px; }
+table.bk tbody tr:last-child td { border-bottom: 2px solid var(--ink); }
+table.bk th:first-child, table.bk td:first-child { text-align: left; padding-left: 0; }
+table.bk th, table.bk td { text-align: right; }
+table.bk td.x { color: var(--red); font-weight: 700; white-space: nowrap; }
+table.bk td:first-child { font-size: 17px; }
+table.bk tr.mlab { display: none; }
+table.bk .short { display: none; }
+@media (max-width: 600px) {
+  table.bk th:first-child, table.bk td.lab { display: none; }
+  table.bk tr.mlab { display: table-row; }
+  table.bk tr.mlab td { text-align: left; font-size: 15px; color: var(--ink-2); padding: 12px 0 0; }
+  table.bk tr.vals td { padding-top: 2px; font-size: 20px; }
+  table.bk tr.vals td:nth-child(2) { text-align: left; padding-left: 0; }
+  table.bk th:nth-child(2) { text-align: left; padding-left: 0; }
+  table.bk .long { display: none; }
+  table.bk .short { display: inline; }
+}
+
+.waffles { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; max-width: 640px; margin: 0 auto; }
+.waffle h3 { font-size: 16px; font-weight: 400; margin: 0 0 6px; line-height: 1.35; min-height: 2.7em; }
+.waffle .pct { font-size: 46px; line-height: 1; font-weight: 600; margin: 0 0 12px; font-variant-numeric: tabular-nums lining-nums; }
+.waffle .pct.red { color: var(--red); }
+.key { display: flex; gap: 18px; justify-content: center; font-size: 15px; color: var(--ink-2); margin-top: 14px; flex-wrap: wrap; }
+.key i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+.areas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); column-gap: 16px; }
+.areas .nm { font-size: 15px; color: var(--ink); padding: 4px 0; line-height: 1.3; align-self: center; }
+.areas .nm small { color: var(--ink-3); font-size: 13px; font-variant-numeric: tabular-nums; }
+.areas .st { align-self: center; }
+.areas .ax { grid-column: 2; }
+@media (max-width: 600px) {
+  body { font-size: 17px; }
+  .waffles { gap: 16px; }
+  .waffle .pct { font-size: 36px; }
+  .areas { grid-template-columns: minmax(0, 1fr); }
+  .areas .nm { padding: 8px 0 0; }
+  .areas .ax { grid-column: 1; }
+}
+
+ul.lim { padding-left: 1.2em; margin: 0; }
+ul.lim li { margin-bottom: 10px; }
+.share-end { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+
+details.appx { margin-top: 64px; border-top: 1px solid var(--rule); padding-top: 18px; }
+details.appx > summary { cursor: pointer; font-size: 22px; font-weight: 700; list-style-position: outside; }
+details.appx h3 { font-size: 18px; margin: 32px 0 6px; }
+.small { font-size: 15px; color: var(--ink-2); }
+table.plain { border-collapse: collapse; width: 100%; font-size: 15px; font-variant-numeric: tabular-nums lining-nums; }
+table.plain th, table.plain td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.plain th { font-weight: 600; border-bottom: 1px solid var(--ink); white-space: nowrap; }
+table.plain th:first-child, table.plain td:first-child { text-align: left; padding-left: 0; }
+table.plain .note { color: var(--ink-3); font-size: 13px; }
+a { color: var(--ink); text-decoration-color: var(--red); text-underline-offset: 3px; }
+footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--rule); color: var(--ink-3); font-size: 14px; }
+
+#tip { position: fixed; pointer-events: none; display: none; z-index: 5; background: var(--paper); color: var(--ink);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 8px 11px; font-size: 14px; line-height: 1.45;
+  box-shadow: 0 6px 20px rgba(0,0,0,.14); max-width: 300px; font-variant-numeric: tabular-nums lining-nums; }
+#tip .t { color: var(--ink-2); margin-bottom: 3px; }
+#tip .v { font-weight: 700; }
+#tip .k { display: inline-block; width: 12px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: 4px; }
+#tip .m { color: var(--ink-2); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="runhead">
+  <span class="label"><i>Not under review as a conference paper at ICLR 2027</i></span>
+</div>
+
+<main class="page">
+  <header class="titleblock">
+    <h1 id="title"></h1>
+    <p class="byline"><i>Anonymous authors</i><br>Paper not under double-blind review<br>Detector AI score of this paper: <span class="self">100%</span></p>
+  </header>
+
+  <section class="abstract">
+    <h2>Abstract</h2>
+    <p id="abstract"></p>
+  </section>
+
+  <figure class="wide" id="fig1">
+    <div id="c1"></div>
+    <figcaption id="cap1"></figcaption>
+  </figure>
+
+  <figure class="wide" id="tab1">
+    <div class="tbl" id="t1"></div>
+  </figure>
+
+  <figure id="fig2">
+    <div class="waffles" id="c2"></div>
+    <div class="key"><span><i style="background:var(--red)"></i>Got at least one 1</span><span><i style="background:var(--empty)"></i>Didn't</span></div>
+    <figcaption id="cap2"></figcaption>
+  </figure>
+
+  <figure id="fig3">
+    <div class="areas" id="c3"></div>
+    <figcaption id="cap3"></figcaption>
+  </figure>
+
+  <h2 class="sec">Limitations</h2>
+  <ul class="lim" id="lim"></ul>
+
+  <details class="appx">
+    <summary>Appendix: method, robustness checks, full numbers</summary>
+    <div id="appx"></div>
+  </details>
+
+  <footer id="foot"></footer>
+</main>
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script id="data" type="application/json">{"n_joined":40449,"n_detector_listed":42422,"n_detector_fetched":42422,"n_reviewed":40458,"n_active":40616,"snapshot":"2026-11-06T13:54:47+00:00","reviews":125021,"min_sentences":50,"top10_cutoff":2.6667,"low_cutoff":1.6667,"flag_model":"qwen36-35b-a3b-oct10","main":{"n":40449,"pearson":-0.1466135286110965,"pearson_p":3.0584585661232794e-195,"pearson_ci":[-0.15597026601922032,-0.13687053304356492],"spearman":-0.2059035256698292,"spearman_p":0.0,"spearman_ci":[-0.21533453497961702,-0.1961300766010589],"r2":0.02149552677179681},"flag_main":{"n":40449,"pearson":-0.09784774922678457,"pearson_p":5.038216605051176e-87,"pearson_ci":[-0.1077080457859635,-0.08791192327413447],"spearman":-0.18351322330214373,"spearman_p":1.715149728001753e-308,"spearman_ci":[-0.19302449053287207,-0.1743948395807495],"r2":0.009574182028747722},"ms_summary":{"median":0.833369,"p25":0.572568,"p75":0.950769},"fs_summary":{"median":0.9637096774193549,"exactly100":0.2579297386832802,"over90":0.655590991124626},"rating_summary":{"mean":2.060741038980303,"median":2.0},"ventiles":[{"n":2023,"mean":2.120810677212061,"se":0.010684543333119226,"ci":[2.0998689722791477,2.1417523821449747],"top10":0.07909045971329709,"low":0.25852694018783984,"k":1,"lo":3.55731e-06,"hi":0.0904812,"med":0.0245378},{"n":2023,"mean":2.1275827978250126,"se":0.009755889674981342,"ci":[2.1084612540620493,2.146704341587976],"top10":0.0583292140385566,"low":0.23183391003460208,"k":2,"lo":0.0906293,"hi":0.24004,"med":0.165433},{"n":2023,"mean":2.1395452298566484,"se":0.009822733414740886,"ci":[2.1202926723637563,2.1587977873495405],"top10":0.06623826000988631,"low":0.2338111715274345,"k":3,"lo":0.240047,"hi":0.376315,"med":0.312392},{"n":2023,"mean":2.143475037073653,"se":0.009532805555388974,"ci":[2.124790738185091,2.1621593359622153],"top10":0.06129510627780524,"low":0.20662382600098864,"k":4,"lo":0.376321,"hi":0.484141,"med":0.433221},{"n":2023,"mean":2.1530153237765695,"se":0.009730075193029297,"ci":[2.133944376398232,2.1720862711549067],"top10":0.06722689075630252,"low":0.21304992585269403,"k":5,"lo":0.48415,"hi":0.572624,"med":0.530073},{"n":2023,"mean":2.151466468940517,"se":0.0095090272460668,"ci":[2.1328287755382265,2.170104162342808],"top10":0.06228373702422145,"low":0.19574888779041028,"k":6,"lo":0.572682,"hi":0.646092,"med":0.6118},{"n":2023,"mean":2.1464079749546876,"se":0.009120635335956482,"ci":[2.128531529696213,2.1642844202131624],"top10":0.05388037567968364,"low":0.2031636183885319,"k":7,"lo":0.646128,"hi":0.707051,"med":0.678507},{"n":2023,"mean":2.132616576042181,"se":0.009202951005582216,"ci":[2.11457879207124,2.1506543600131223],"top10":0.04498269896193772,"low":0.20662382600098864,"k":8,"lo":0.707086,"hi":0.756003,"med":0.732708},{"n":2023,"mean":2.1287279617729444,"se":0.009380253231806267,"ci":[2.110342665438604,2.147113258107285],"top10":0.056846267918932276,"low":0.22194760257043994,"k":9,"lo":0.756004,"hi":0.797676,"med":0.778027},{"n":2022,"mean":2.1312149686778765,"se":0.009375290811683609,"ci":[2.1128393986869765,2.1495905386687766],"top10":0.05341246290801187,"low":0.2314540059347181,"k":10,"lo":0.797687,"hi":0.833505,"med":0.8161445},{"n":2022,"mean":2.1219584569732937,"se":0.009260362066438502,"ci":[2.103808147323074,2.1401087666235132],"top10":0.050445103857566766,"low":0.2215628090999011,"k":11,"lo":0.83353,"hi":0.864653,"med":0.849431},{"n":2022,"mean":2.0946587537091985,"se":0.009334403330921611,"ci":[2.0763633231805922,2.112954184237805],"top10":0.044015825914935705,"low":0.25272007912957467,"k":12,"lo":0.864658,"hi":0.892164,"med":0.8788935},{"n":2022,"mean":2.104739531816683,"se":0.00938131817649558,"ci":[2.086352148190752,2.1231269154426142],"top10":0.04747774480712166,"low":0.23639960435212662,"k":13,"lo":0.892168,"hi":0.914772,"med":0.904072},{"n":2022,"mean":2.0642927794263106,"se":0.009437145746982366,"ci":[2.045795973762225,2.082789585090396],"top10":0.0361028684470821,"low":0.27596439169139464,"k":14,"lo":0.914773,"hi":0.934254,"med":0.925049},{"n":2022,"mean":2.017350807781075,"se":0.009936860025131196,"ci":[1.9978745621318177,2.036827053430332],"top10":0.0380811078140455,"low":0.3283877349159248,"k":15,"lo":0.934254,"hi":0.95078,"med":0.9429639999999999},{"n":2022,"mean":1.992449719749423,"se":0.00976972970117978,"ci":[1.9733010495351107,2.0115983899637353],"top10":0.033630069238377844,"low":0.34619188921859545,"k":16,"lo":0.950788,"hi":0.964846,"med":0.9584145},{"n":2022,"mean":1.9467771183646556,"se":0.010085174013748853,"ci":[1.927010177297708,1.9665440594316033],"top10":0.03115727002967359,"low":0.3916913946587537,"k":17,"lo":0.96485,"hi":0.975985,"med":0.9706325},{"n":2022,"mean":1.9092235410484668,"se":0.010103202306807156,"ci":[1.8894212645271249,1.9290258175698087],"top10":0.027200791295746787,"low":0.4297725024727992,"k":18,"lo":0.975987,"hi":0.985147,"med":0.980899},{"n":2022,"mean":1.843923979087184,"se":0.009891735396250548,"ci":[1.824536177710533,1.863311780463835],"top10":0.01483679525222552,"low":0.48516320474777447,"k":19,"lo":0.985154,"hi":0.993011,"med":0.9893015000000001},{"n":2022,"mean":1.744238377843719,"se":0.009785109208312411,"ci":[1.7250595637954267,1.7634171918920112],"top10":0.014342235410484669,"low":0.582591493570722,"k":20,"lo":0.993011,"hi":0.999877,"med":0.996299}],"deciles":[{"n":4045,"mean":2.12439225381129,"se":0.007232685582592071,"ci":[2.1102161900694094,2.1385683175531707],"top10":0.06872682323856613,"low":0.2449938195302843,"k":1,"lo":3.55731e-06,"hi":0.239927,"n_reviews":12499,"dist":{"1":0.16225298023841908,"2":0.5732458596687735,"3":0.24009920793663492,"4":0.024401952156172493}},{"n":4045,"mean":2.1413803049031728,"se":0.006846644733981486,"ci":[2.127960881224569,2.1547997285817764],"top10":0.06378244746600742,"low":0.22027194066749073,"k":2,"lo":0.24004,"hi":0.484124,"n_reviews":12480,"dist":{"1":0.1420673076923077,"2":0.5961538461538461,"3":0.2387019230769231,"4":0.023076923076923078}},{"n":4045,"mean":2.152278533168521,"se":0.006803246395418561,"ci":[2.1389441702335006,2.165612896103541],"top10":0.06477132262051916,"low":0.20444993819530285,"k":3,"lo":0.484129,"hi":0.64608,"n_reviews":12509,"dist":{"1":0.1356623231273483,"2":0.5948517067711248,"3":0.2509393236869454,"4":0.0185466464145815}},{"n":4045,"mean":2.1395467655541824,"se":0.0064779511438227974,"ci":[2.1268499813122896,2.1522435497960752],"top10":0.049443757725587144,"low":0.2046971569839308,"k":4,"lo":0.646083,"hi":0.755968,"n_reviews":12494,"dist":{"1":0.1358251960941252,"2":0.60244917560429,"3":0.2470785977269089,"4":0.014647030574675845}},{"n":4045,"mean":2.12964153275649,"se":0.006627793873892611,"ci":[2.1166510567636605,2.1426320087493194],"top10":0.05488257107540173,"low":0.22694684796044498,"k":5,"lo":0.755974,"hi":0.833369,"n_reviews":12513,"dist":{"1":0.14225205785982578,"2":0.5996963158315352,"3":0.24270758411252297,"4":0.015344042196116039}},{"n":4045,"mean":2.1085702513391023,"se":0.006577724063511648,"ci":[2.0956779121746196,2.121462590503585],"top10":0.047466007416563656,"low":0.23708281829419037,"k":6,"lo":0.833459,"hi":0.892123,"n_reviews":12507,"dist":{"1":0.15199488286559526,"2":0.5993443671543935,"3":0.23618773486847366,"4":0.012473015111537538}},{"n":4045,"mean":2.084454058508447,"se":0.006659799647240071,"ci":[2.0714008511998565,2.0975072658170375],"top10":0.041779975278121134,"low":0.2561186650185414,"k":7,"lo":0.892132,"hi":0.934252,"n_reviews":12557,"dist":{"1":0.1669984868997372,"2":0.5948873138488493,"3":0.22457593374213586,"4":0.013538265509277694}},{"n":4045,"mean":2.0049814585908527,"se":0.006970170831605622,"ci":[1.9913199237609058,2.0186429934207997],"top10":0.03584672435105068,"low":0.3374536464771323,"k":8,"lo":0.934254,"hi":0.964834,"n_reviews":12500,"dist":{"1":0.22104,"2":0.5644,"3":0.20216,"4":0.0124}},{"n":4045,"mean":1.9280181293778327,"se":0.007141151969753042,"ci":[1.9140214715171167,1.9420147872385487],"top10":0.029171817058096416,"low":0.41063040791100125,"k":9,"lo":0.964846,"hi":0.985147,"n_reviews":12497,"dist":{"1":0.27318556453548853,"2":0.5340481715611747,"3":0.18260382491798033,"4":0.010162438985356485}},{"n":4044,"mean":1.7940811784654513,"se":0.007000085534462374,"ci":[1.780361010817905,1.8078013461129976],"top10":0.014589515331355093,"low":0.5338773491592482,"k":10,"lo":0.985154,"hi":0.999877,"n_reviews":12465,"dist":{"1":0.36077015643802646,"2":0.4896109105495387,"3":0.14288006417970317,"4":0.006738868832731649}}],"decile_gap":{"bottom":2.12439225381129,"top":1.7940811784654513,"diff":-0.3303110753458387,"d":-0.7297471058274524},"lower60":{"n":24269,"pearson":-0.0072876720707503746,"pearson_p":0.2562520922838475,"pearson_ci":[-0.020219205318211687,0.006020343772983015],"spearman":-0.01185051842501464,"spearman_p":0.06486493228773597,"spearman_ci":[-0.025077878008614784,0.0006979455462689893],"r2":5.311016421079505e-05,"cut":0.8921206},"upper40":{"n":16180,"pearson":-0.2308667644712124,"pearson_p":4.350774984424499e-200,"pearson_ci":[-0.24489997264145583,-0.21462404038894092],"spearman":-0.2438551969294701,"spearman_p":1.9340687671080753e-224,"spearman_ci":[-0.25771616227616423,-0.2297223294430189],"r2":0.05329946293740626},"flag_bands":[{"label":"Under 10%","n":1170,"mean":2.121452991452992,"se":0.014543653222562515,"ci":[2.0929474311367695,2.149958551769214],"top10":0.08717948717948718,"low":0.25555555555555554},{"label":"10–25%","n":1124,"mean":2.117422894424674,"se":0.013600992022985875,"ci":[2.0907649500596213,2.1440808387897263],"top10":0.06850533807829182,"low":0.2606761565836299},{"label":"25–50%","n":2152,"mean":2.1266263940520447,"se":0.009601607377856767,"ci":[2.1078072435914454,2.145445544512644],"top10":0.06133828996282528,"low":0.23513011152416358},{"label":"50–75%","n":3912,"mean":2.1449471710974777,"se":0.0069715026255396636,"ci":[2.13128302595142,2.1586113162435354],"top10":0.0651840490797546,"low":0.21881390593047034},{"label":"75–90%","n":5573,"mean":2.143644954841797,"se":0.00570554983319011,"ci":[2.132462077168744,2.1548278325148496],"top10":0.058675758119504755,"low":0.2076081105329266},{"label":"90–<100%","n":16085,"mean":2.092983110558491,"se":0.003368432630193316,"ci":[2.086380982603312,2.09958523851367],"top10":0.04557040721168791,"low":0.25402548958657134},{"label":"100%","n":10433,"mean":1.9086677803489844,"se":0.004466321142974437,"ci":[1.8999137909087545,1.9174217697892144],"top10":0.026550369021374486,"low":0.4253810025879421}],"within_area":{"pearson":-0.14651336085132546,"pearson_ci":[-0.15606796194921962,-0.13644297851231968]},"areas":[{"area":"infrastructure, software libraries, hardware, systems, etc.","n":665,"spearman":-0.28993294914595413,"ci":[-0.362048376411985,-0.21436757764872008],"median_ms":0.917572,"mean_rating":2.076265664160401},{"area":"neurosymbolic & hybrid AI systems (physics-informed, logic & formal reasoning, etc.)","n":531,"spearman":-0.28386540578881786,"ci":[-0.3647007883582998,-0.198783155024815],"median_ms":0.91295,"mean_rating":1.931418706842436},{"area":"applications to neuroscience & cognitive science","n":694,"spearman":-0.2683707973738761,"ci":[-0.3400446115000374,-0.1935971594150217],"median_ms":0.7824785,"mean_rating":2.0535302593659943},{"area":"interpretability and explainable AI","n":1693,"spearman":-0.26437797195403884,"ci":[-0.31072493988583216,-0.21677681661170545],"median_ms":0.886089,"mean_rating":1.9234888757629456},{"area":"datasets and benchmarks","n":2973,"spearman":-0.24418950322204078,"ci":[-0.2796913189620221,-0.2080208180327629],"median_ms":0.868953,"mean_rating":2.0569458459468546},{"area":"reinforcement learning","n":2258,"spearman":-0.23438879862465378,"ci":[-0.275290732357327,-0.19263984017479446],"median_ms":0.8338185,"mean_rating":2.0453351048125183},{"area":"foundation or frontier models, including LLMs","n":6339,"spearman":-0.2301951972965725,"ci":[-0.254759781699177,-0.20533371435429054],"median_ms":0.862294,"mean_rating":2.070344578910599},{"area":"learning theory","n":1299,"spearman":-0.21988662001262327,"ci":[-0.27405980999668017,-0.16432241730858146],"median_ms":0.887042,"mean_rating":2.128598922247883},{"area":"optimization","n":1537,"spearman":-0.21929985532878798,"ci":[-0.26916748210401237,-0.168259476648782],"median_ms":0.794744,"mean_rating":2.0856972457167644},{"area":"alignment, fairness, safety, privacy, and societal considerations","n":3095,"spearman":-0.21508476311199107,"ci":[-0.2504189397824512,-0.17917834759723256],"median_ms":0.825182,"mean_rating":2.034361873990307},{"area":"transfer learning, meta learning, and lifelong learning","n":1103,"spearman":-0.2149551746480992,"ci":[-0.27383295780603023,-0.15447227239260278],"median_ms":0.866162,"mean_rating":1.9909489271683285},{"area":"applications to robotics, autonomy, planning","n":2144,"spearman":-0.2140631876412869,"ci":[-0.2564703536560521,-0.1708334670153164],"median_ms":0.827082,"mean_rating":2.123460820895523},{"area":"probabilistic methods (Bayesian methods, variational inference, sampling, UQ, etc.)","n":850,"spearman":-0.18635386286274377,"ci":[-0.254243486576913,-0.11663672161798712],"median_ms":0.8256840000000001,"mean_rating":2.0442745098039214},{"area":"unsupervised, self-supervised, semi-supervised, and supervised representation learning","n":2033,"spearman":-0.18336109450952667,"ci":[-0.22751809855499508,-0.13845155312208904],"median_ms":0.797053,"mean_rating":2.039736022298737},{"area":"causal reasoning","n":318,"spearman":-0.1700690263693203,"ci":[-0.281027420494239,-0.054623820691233525],"median_ms":0.8822490000000001,"mean_rating":1.976572327044025},{"area":"applications to physical sciences (physics, chemistry, biology, etc.)","n":1907,"spearman":-0.15657615137957256,"ci":[-0.20264393137784764,-0.10981685778178979],"median_ms":0.830167,"mean_rating":2.0080667715434366},{"area":"learning on time series and dynamical systems","n":1099,"spearman":-0.1555703678678436,"ci":[-0.2161369350858133,-0.09381109816499869],"median_ms":0.862516,"mean_rating":1.9875947831361844},{"area":"applications to computer vision, audio, language, and other modalities","n":5175,"spearman":-0.15214479591842378,"ci":[-0.1802338095504971,-0.12380784148204861],"median_ms":0.790044,"mean_rating":2.1119581320450886},{"area":"learning on graphs and other geometries & topologies","n":911,"spearman":-0.14015508295876586,"ci":[-0.20699649759529395,-0.0720113218883194],"median_ms":0.771122,"mean_rating":2.019648737650933},{"area":"other topics in machine learning (i.e., none of the above)","n":1076,"spearman":-0.1307047259636735,"ci":[-0.19245176310724316,-0.06792676134310394],"median_ms":0.778832,"mean_rating":2.016403345724907},{"area":"generative models","n":2749,"spearman":-0.1262065144666232,"ci":[-0.16500765548862428,-0.08701532561510938],"median_ms":0.784581,"mean_rating":2.1563962653085973}],"n_area_negative":21,"robustness":[{"n":40449,"pearson":-0.1466135286110965,"pearson_p":3.0584585661232794e-195,"pearson_ci":[-0.1558707455191695,-0.13716800400340337],"spearman":-0.2059035256698292,"spearman_p":0.0,"spearman_ci":[-0.21525639836322286,-0.19532488060836126],"r2":0.02149552677179681,"label":"Average AI score (body) vs mean rating","note":"headline"},{"n":40449,"pearson":-0.11866616726828334,"pearson_p":1.1893115689002614e-127,"pearson_ci":[-0.1275958083900855,-0.10762537008757005],"spearman":-0.18536930641521626,"spearman_p":6.099316074e-315,"spearman_ci":[-0.19503974911318372,-0.1759545402448291],"r2":0.0140816592541442,"label":"Average AI score (body + appendix) vs mean rating","note":"appendix included, references excluded"},{"n":40449,"pearson":-0.09784774922678457,"pearson_p":5.038216605051176e-87,"pearson_ci":[-0.10773945699857035,-0.08824436772503769],"spearman":-0.18351322330214373,"spearman_p":1.715149728001753e-308,"spearman_ci":[-0.19379459429607854,-0.17387339333025023],"r2":0.009574182028747722,"label":"Share flagged, FPR 0.1% (site default) vs mean rating","note":"thresholded per sentence"},{"n":40449,"pearson":-0.14080381898866068,"pearson_p":6.231646444355089e-180,"pearson_ci":[-0.15048649068821127,-0.1311582256634731],"spearman":-0.2024103412668496,"spearman_p":0.0,"spearman_ci":[-0.2126460569715647,-0.19323269891784892],"r2":0.01982571544179152,"label":"Share flagged, FPR 0.01% vs mean rating","note":"stricter threshold"},{"n":40449,"pearson":-0.08205403432568759,"pearson_p":1.3998272914239132e-61,"pearson_ci":[-0.09192048202400752,-0.07306689092426097],"spearman":-0.17374651234623448,"spearman_p":9.119235651227455e-276,"spearman_ci":[-0.1826269232924277,-0.16437487298113698],"r2":0.0067328645491211165,"label":"Share flagged, body + appendix vs mean rating","note":"appendix included"},{"n":40114,"pearson":-0.14751911936420245,"pearson_p":4.558344929702083e-196,"pearson_ci":[-0.15736692360056972,-0.13838428280008025],"spearman":-0.20638947008783456,"spearman_p":0.0,"spearman_ci":[-0.21582375217120964,-0.19729747131292105],"r2":0.02176189057798981,"label":"Average AI score vs mean rating, ≥ 3 reviews","note":"drops thinly reviewed papers"},{"n":40449,"pearson":-0.1298065029727437,"pearson_p":8.998211062403121e-153,"pearson_ci":[-0.13981654500178234,-0.11917237266748683],"spearman":-0.19787267951684542,"spearman_p":0.0,"spearman_ci":[-0.2077038685115303,-0.18768420234774705],"r2":0.01684972821401292,"label":"Average AI score vs lowest rating","note":"harshest reviewer"},{"n":40449,"pearson":-0.09774925936098104,"pearson_p":7.5023530318120225e-87,"pearson_ci":[-0.1081422500003075,-0.08867056095561662],"spearman":-0.12685377863588188,"spearman_p":7.002070192514765e-146,"spearman_ci":[-0.13671836985101696,-0.1168317083039996],"r2":0.00955491770562034,"label":"Average AI score vs highest rating","note":"most generous reviewer"},{"n":40449,"pearson":-0.08419294911087012,"pearson_p":9.293256178262042e-65,"pearson_ci":[-0.09378322422478717,-0.07410386425306267],"spearman":-0.12454908028949625,"spearman_p":1.279177359464358e-140,"spearman_ci":[-0.1344317354877128,-0.11385667821023344],"r2":0.007088452679985566,"label":"Average AI score vs mean reviewer confidence","note":"not a quality signal"}],"hero":{"bottom60":{"papers":24269,"reviews":74999,"ones":0.14501526687022492,"threes_up":0.26069680929079053,"mean":2.1326266705124506,"top10":0.058181218838847915,"low":0.22308294532119163,"any_one":0.35493839878033706,"all_one":0.010342412130701719,"score_lo":3.55731e-06,"score_hi":0.892111},"top10":{"papers":4045,"reviews":12468,"ones":0.3608437600256657,"threes_up":0.14958293230670516,"mean":1.793967272941315,"top10":0.014585908529048208,"low":0.5339925834363412,"any_one":0.711248454882571,"all_one":0.07194066749072929,"score_lo":0.985147,"score_hi":0.999877},"top5":{"papers":2023,"reviews":6216,"ones":0.39398326898326896,"threes_up":0.13384813384813385,"mean":1.7438704893722197,"top10":0.014335145823035097,"low":0.5827978250123579,"any_one":0.7538309441423628,"all_one":0.08255066732575383,"score_lo":0.993011,"score_hi":0.999877},"top1":{"papers":405,"reviews":1245,"ones":0.4353413654618474,"threes_up":0.11726907630522089,"mean":1.6872016460905348,"top10":0.0024691358024691358,"low":0.6469135802469136,"any_one":0.8,"all_one":0.10123456790123457,"score_lo":0.998202,"score_hi":0.999877},"all":{"papers":40449,"reviews":125021,"ones":0.18914422377040657,"threes_up":0.2359523600035194,"mean":2.060741038980303,"top10":0.047046898563623325,"low":0.28764617172241586,"any_one":0.43217384855002594,"all_one":0.020420776780637345,"score_lo":3.55731e-06,"score_hi":0.999877}},"built_at":"2026-11-06T16:49:10.497723+00:00"}</script>
+<script>
+"use strict";
+const D = JSON.parse(document.getElementById("data").textContent);
+const SITE = "https://iclr27.trung-dt.com/", REPO = "https://github.com/trungdt880/iclr-2027-ai-vs-reviews";
+const $ = id => document.getElementById(id), NS = "http://www.w3.org/2000/svg";
+const f2 = n => n.toFixed(2), f3 = n => n.toFixed(3);
+const pct = (p, d = 0) => (p * 100).toFixed(d) + "%";
+const fmt = n => n.toLocaleString("en-US");
+const sg = (n, d = 2) => (n < 0 ? "−" : "") + Math.abs(n).toFixed(d);
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const when = iso => new Date(iso).toLocaleDateString("en-US", { dateStyle: "long", timeZone: "UTC" });
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+function el(tag, attrs = {}, parent) {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+function h(tag, props = {}, ...kids) {
+  const n = document.createElement(tag);
+  for (const k in props) { if (k === "class") n.className = props[k]; else if (k === "style") n.style.cssText = props[k]; else n.setAttribute(k, props[k]); }
+  for (const c of kids) if (c != null) n.append(c);
+  return n;
+}
+const tipEl = $("tip");
+function showTip(e, title, rows) {
+  tipEl.replaceChildren(h("div", { class: "t" }, title));
+  for (const [v, lab, key] of rows) {
+    const line = h("div");
+    if (key) line.append(h("span", { class: "k", style: `background:${key}` }));
+    line.append(h("span", { class: "v" }, v), " ", h("span", { class: "m" }, lab));
+    tipEl.append(line);
+  }
+  tipEl.style.display = "block";
+  const x = Math.max(8, Math.min(e.clientX + 14, innerWidth - tipEl.offsetWidth - 8));
+  const y = e.clientY - tipEl.offsetHeight - 14;
+  tipEl.style.left = x + "px"; tipEl.style.top = (y < 8 ? e.clientY + 18 : y) + "px";
+}
+const hideTip = () => { tipEl.style.display = "none"; };
+
+// ---------- numbers used in the copy
+const H = D.hero, lo60 = H.bottom60, t5 = H.top5, t1 = H.top1, M = D.main, V = D.ventiles;
+const ratioOnes = t5.ones / lo60.ones;
+const t1TopCount = Math.round(t1.top10 * t1.papers);
+const x = r => (r >= 10 ? r.toFixed(0) : r.toFixed(1)) + "×";
+
+const TITLE = `ICLR 2027 reviewers gave the most AI-sounding papers ${x(ratioOnes)} as many 1s`;
+{ const [a, b] = TITLE.split("AI-sounding"); $("title").replaceChildren(a, h("span", { style: "white-space:nowrap" }, "AI-sounding"), b); }
+$("abstract").textContent =
+  `We matched ${fmt(D.n_joined)} ICLR 2027 submissions to their scores from an AI-text detector and to their reviews on OpenReview. ` +
+  `For the 60% of papers that read least like an LLM, the detector score has no relationship with how reviewers rate them. ` +
+  `Past that point, ratings fall off a cliff. The 5% of papers that read most like an LLM got ${x(ratioOnes)} as many 1s (the lowest score), ` +
+  `${pct(t5.any_one)} of them got at least one 1, and only ${pct(t5.top10, 1)} cleared the top-10% cutoff. ` +
+  `Of the ${fmt(t1.papers)} most AI-sounding papers of all, ${t1TopCount === 1 ? "one" : fmt(t1TopCount)} did.`;
+
+// ---------- figure 1: the cliff
+const BEND = 12; // ventiles 1..12 = bottom 60%
+function fig1(animate) {
+  const host = $("c1"), W = Math.max(300, host.clientWidth), small = W < 600;
+  const Hh = small ? 330 : 440, m = { t: 34, r: small ? 14 : 90, b: 64, l: small ? 40 : 54 };
+  const iw = W - m.l - m.r, ih = Hh - m.t - m.b, ylo = 1.65, yhi = 2.25;
+  const X = p => m.l + iw * p / 100, Y = v => m.t + ih * (1 - (v - ylo) / (yhi - ylo));
+  const svg = el("svg", { width: W, height: Hh, viewBox: `0 0 ${W} ${Hh}`, role: "img",
+    "aria-label": `Line chart. Mean review rating stays near 2.13 for the 60% least AI-sounding papers, then falls steeply to ${f2(V[19].mean)} for the most AI-sounding 5%.` });
+  for (let v = 1.7; v <= yhi + 1e-9; v += 0.1) {
+    el("line", { x1: m.l, x2: m.l + iw, y1: Y(v), y2: Y(v), class: "gridline" }, svg);
+    el("text", { x: m.l - 8, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = v.toFixed(1);
+  }
+  el("line", { x1: m.l, x2: m.l, y1: m.t, y2: m.t + ih, class: "axis" }, svg);
+  el("line", { x1: m.l, x2: m.l + iw, y1: m.t + ih, y2: m.t + ih, class: "axis" }, svg);
+  const ticks = small ? [0, 60, 100] : [0, 20, 40, 60, 80, 100];
+  for (const p of ticks) {
+    el("line", { x1: X(p), x2: X(p), y1: m.t + ih, y2: m.t + ih + 5, class: "axis" }, svg);
+    el("text", { x: X(p), y: m.t + ih + 20, "text-anchor": p === 0 ? "start" : p === 100 ? "end" : "middle" }, svg).textContent = `${p}%`;
+  }
+  el("text", { x: m.l, y: Hh - 8, "text-anchor": "start" }, svg).textContent = small ? "← less AI-sounding" : "← reads least like an LLM";
+  el("text", { x: m.l + iw, y: Hh - 8, "text-anchor": "end" }, svg).textContent = small ? "more AI-sounding →" : "reads most like an LLM →";
+  el("text", { x: m.l + iw / 2, y: Hh - 30, "text-anchor": "middle", class: "t-ink" }, svg).textContent = small ? "Papers ranked by detector AI score" : "Papers ranked by the detector's AI score (percentile)";
+  if (small) el("text", { x: 0, y: 12, "text-anchor": "start", class: "t-ink" }, svg).textContent = "Average review rating";
+  else el("text", { x: 0, y: 0, transform: `translate(14,${m.t + ih / 2}) rotate(-90)`, "text-anchor": "middle", class: "t-ink" }, svg).textContent = "Average review rating";
+
+  // everyone reference
+  const all = D.rating_summary.mean;
+  el("line", { x1: m.l, x2: m.l + iw, y1: Y(all), y2: Y(all), class: "ref" }, svg);
+  el("text", { x: small ? m.l + iw : m.l + iw + 8, y: small ? Y(all) - 6 : Y(all) + 4, "text-anchor": small ? "end" : "start" }, svg).textContent = `all papers ${f2(all)}`;
+
+  const px = V.map(v => X((v.k - 0.5) * 5)), py = V.map(v => Y(v.mean));
+  const bandPath = (a, b) => {
+    let d = ""; for (let i = a; i <= b; i++) d += `${i === a ? "M" : "L"}${px[i]},${Y(V[i].ci[1])}`;
+    for (let i = b; i >= a; i--) d += `L${px[i]},${Y(V[i].ci[0])}`; return d + "Z";
+  };
+  el("path", { d: bandPath(0, BEND - 1), class: "band-ink" }, svg);
+  el("path", { d: bandPath(BEND - 1, 19), class: "band-red" }, svg);
+  const path = (a, b) => { let d = ""; for (let i = a; i <= b; i++) d += `${i === a ? "M" : "L"}${px[i]},${py[i]}`; return d; };
+  el("path", { d: path(0, BEND - 1), class: "line-ink" }, svg);
+  const red = el("path", { d: path(BEND - 1, 19), class: "line-red" }, svg);
+
+  // annotations
+  el("text", { x: X(30), y: Math.min(...py.slice(0, BEND)) - 16, "text-anchor": "middle", class: "ann" }, svg).textContent = small ? "flat for 60% of papers" : "Flat for 60% of papers";
+  const endx = px[19], endy = py[19];
+  const g = el("g", { class: animate ? "pop" : "" }, svg);
+  el("circle", { cx: endx, cy: endy, r: 5.5, class: "dot-red" }, g);
+  el("text", { x: small ? endx - 10 : endx + 12, y: endy + 6, "text-anchor": small ? "end" : "start", class: "big red", style: small ? "font-size:28px" : "" }, g).textContent = f2(V[19].mean);
+  el("text", { x: X(76), y: Y(1.98) + (small ? 26 : 30), "text-anchor": "end", class: "ann red" }, g).textContent = "then the cliff";
+  el("circle", { cx: px[0], cy: py[0], r: 4, class: "dot-ink" }, svg);
+  el("text", { x: px[0] + 2, y: py[0] + 22, "text-anchor": "start", class: "t-ink", style: "font-weight:600;font-size:15px" }, svg).textContent = f2(V[0].mean);
+
+  // hover
+  const guide = el("line", { y1: m.t, y2: m.t + ih, class: "guide", visibility: "hidden" }, svg);
+  const mark = el("circle", { r: 5, class: "dot-ink", visibility: "hidden" }, svg);
+  const hit = el("rect", { x: m.l, y: m.t, width: iw, height: ih, class: "hit", tabindex: 0, "aria-label": "Chart data, use arrow keys" }, svg);
+  let cur = -1;
+  const show = (i, e) => {
+    cur = i; const v = V[i], isRed = i >= BEND;
+    guide.setAttribute("x1", px[i]); guide.setAttribute("x2", px[i]); guide.setAttribute("visibility", "visible");
+    mark.setAttribute("cx", px[i]); mark.setAttribute("cy", py[i]); mark.setAttribute("visibility", "visible");
+    mark.setAttribute("class", isRed ? "dot-red" : "dot-ink");
+    showTip(e, `Papers ranked ${(v.k - 1) * 5}–${v.k * 5}% by AI score (${f3(v.lo)}–${f3(v.hi)})`, [
+      [f2(v.mean), `average rating (95% CI ${f2(v.ci[0])}–${f2(v.ci[1])})`, css(isRed ? "--red" : "--ink")],
+      [pct(v.low), `average ${f2(D.low_cutoff)} or lower`],
+      [pct(v.top10, 1), "cleared the top-10% cutoff"],
+      [fmt(v.n), "papers"]]);
+  };
+  hit.addEventListener("pointermove", e => {
+    const b = svg.getBoundingClientRect(), xx = e.clientX - b.left;
+    let best = 0; px.forEach((p, i) => { if (Math.abs(p - xx) < Math.abs(px[best] - xx)) best = i; });
+    show(best, e);
+  });
+  const off = () => { hideTip(); guide.setAttribute("visibility", "hidden"); mark.setAttribute("visibility", "hidden"); };
+  hit.addEventListener("pointerleave", off); hit.addEventListener("blur", off);
+  hit.addEventListener("keydown", e => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault(); const i = Math.max(0, Math.min(19, cur + (e.key === "ArrowRight" ? 1 : -1)));
+    const r = svg.getBoundingClientRect(); show(i, { clientX: r.left + px[i], clientY: r.top + py[i] });
+  });
+  host.replaceChildren(svg);
+  if (animate) { const L = red.getTotalLength(); red.style.setProperty("--len", L); red.style.strokeDasharray = L; red.classList.add("draw"); }
+}
+{
+  const c = $("cap1");
+  c.append(h("b", {}, "Figure 1: "), "Average review rating by how AI-sounding a paper is. ",
+    h("span", { class: "m" }, `Papers are ranked by the detector's average AI score and cut into 20 equal groups of about ${fmt(V[0].n)}. Shaded bands are 95% confidence intervals. Ratings use ICLR 2027's 1–4 scale.`));
+}
+
+// ---------- table 1
+{
+  const rows = [
+    ["Average rating", f2(lo60.mean), f2(t5.mean), ""],
+    ["Reviews that gave a 1", pct(lo60.ones), pct(t5.ones), x(t5.ones / lo60.ones)],
+    ["Papers with at least one 1", pct(lo60.any_one), pct(t5.any_one), x(t5.any_one / lo60.any_one)],
+    ["Papers where every reviewer gave a 1", pct(lo60.all_one, 1), pct(t5.all_one, 1), x(t5.all_one / lo60.all_one)],
+    ["Papers above the top-10% cutoff", pct(lo60.top10, 1), pct(t5.top10, 1), `${(lo60.top10 / t5.top10).toFixed(0)}× fewer`],
+  ];
+  const t = h("table", { class: "bk" });
+  const c = h("caption"); c.append(h("b", {}, "Table 1: "), "The least AI-sounding 60% of papers against the most AI-sounding 5%.");
+  t.append(c);
+  const hr = h("tr");
+  hr.append(h("th", {}, ""),
+    h("th", {}, h("span", { class: "long" }, `Least AI-sounding 60% (${fmt(lo60.papers)})`), h("span", { class: "short" }, "Least AI-sounding 60%")),
+    h("th", {}, h("span", { class: "long" }, `Most AI-sounding 5% (${fmt(t5.papers)})`), h("span", { class: "short" }, "Most AI-sounding 5%")),
+    h("th", {}, "Change"));
+  t.append(h("thead", {}, hr));
+  const b = h("tbody");
+  rows.forEach(r => {
+    b.append(h("tr", { class: "mlab" }, h("td", { colspan: "3" }, r[0])));
+    const tr = h("tr", { class: "vals" });
+    r.forEach((s, i) => tr.append(h("td", i === 0 ? { class: "lab" } : i === 3 ? { class: "x" } : {}, s)));
+    b.append(tr);
+  });
+  t.append(b);
+  $("t1").append(t);
+}
+
+// ---------- figure 2: waffles
+function fig2() {
+  const host = $("c2");
+  const groups = [[`Least AI-sounding 60% of papers`, lo60, false], [`Most AI-sounding 5% of papers`, t5, true]];
+  host.replaceChildren(...groups.map(([label, g, red]) => {
+    const box = h("div", { class: "waffle" });
+    box.append(h("h3", {}, label), h("p", { class: "pct" + (red ? " red" : "") }, pct(g.any_one)));
+    const probe = h("div"); box.append(probe);
+    return box;
+  }));
+  [...host.children].forEach((box, gi) => {
+    const g = groups[gi][1], W = Math.min(280, box.clientWidth), gap = W < 200 ? 2 : 3, s = (W - gap * 9) / 10;
+    const on = Math.round(g.any_one * 100);
+    const svg = el("svg", { width: W, height: W, viewBox: `0 0 ${W} ${W}`, role: "img", "aria-label": `${on} of 100 squares filled: ${pct(g.any_one)} of these papers got at least one rating of 1` });
+    for (let i = 0; i < 100; i++) {
+      const r = Math.floor(i / 10), c = i % 10;
+      el("rect", { x: c * (s + gap), y: r * (s + gap), width: s, height: s, rx: 2, class: "cell" + (i < on ? " on" : "") }, svg);
+    }
+    const hit = el("rect", { x: 0, y: 0, width: W, height: W, fill: "transparent", tabindex: 0 }, svg);
+    const tip = e => showTip(e, groups[gi][0], [
+      [pct(g.any_one, 1), "got at least one 1", css("--red")],
+      [pct(g.ones, 1), "of all their reviews were 1s"],
+      [fmt(g.papers), `papers, ${fmt(g.reviews)} reviews`]]);
+    hit.addEventListener("pointermove", tip);
+    hit.addEventListener("focus", () => { const r = hit.getBoundingClientRect(); tip({ clientX: r.left + r.width / 2, clientY: r.top + 20 }); });
+    hit.addEventListener("pointerleave", hideTip); hit.addEventListener("blur", hideTip);
+    box.lastChild.replaceWith(svg);
+  });
+}
+{
+  const c = $("cap2");
+  c.append(h("b", {}, "Figure 2: "), "Share of papers that got at least one rating of 1, the lowest score. ",
+    h("span", { class: "m" }, "Each square is 1% of the group's papers."));
+}
+
+// ---------- figure 3: every area
+const AR = D.areas;
+function fig3() {
+  const host = $("c3"), lo = -0.35, hi = 0.05;
+  host.replaceChildren(h("div"), h("div", { class: "st" }));
+  const W = Math.max(160, host.children[1].clientWidth); host.replaceChildren();
+  const rowH = 22, X = v => 8 + (W - 16) * (v - lo) / (hi - lo);
+  AR.forEach(a => {
+    const nm = h("div", { class: "nm" }, cap(a.area), " ", h("small", {}, fmt(a.n)));
+    const svg = el("svg", { width: W, height: rowH, viewBox: `0 0 ${W} ${rowH}`, role: "img", "aria-label": `${a.area}: correlation ${sg(a.spearman)}` });
+    for (const t of [-0.3, -0.2, -0.1]) el("line", { x1: X(t), x2: X(t), y1: 0, y2: rowH, class: "gridline" }, svg);
+    el("line", { x1: X(0), x2: X(0), y1: 0, y2: rowH, class: "zero" }, svg);
+    el("line", { x1: X(a.ci[0]), x2: X(a.ci[1]), y1: rowH / 2, y2: rowH / 2, class: "whisk" }, svg);
+    el("circle", { cx: X(a.spearman), cy: rowH / 2, r: 5, class: "dot-red" }, svg);
+    const hit = el("rect", { x: 0, y: 0, width: W, height: rowH, fill: "transparent", tabindex: 0 }, svg);
+    const on = e => showTip(e, cap(a.area), [
+      [sg(a.spearman), `rank correlation (95% CI ${sg(a.ci[0])} to ${sg(a.ci[1])})`, css("--red")],
+      [fmt(a.n), "papers"], [f2(a.mean_rating), "average rating"]]);
+    hit.addEventListener("pointermove", on);
+    hit.addEventListener("focus", () => { const r = hit.getBoundingClientRect(); on({ clientX: r.left + X(a.spearman), clientY: r.top }); });
+    hit.addEventListener("pointerleave", hideTip); hit.addEventListener("blur", hideTip);
+    host.append(nm, h("div", { class: "st" }, svg));
+  });
+  const ax = el("svg", { width: W, height: 40, viewBox: `0 0 ${W} 40` });
+  for (const t of [-0.3, -0.2, -0.1, 0]) el("text", { x: X(t), y: 14, "text-anchor": "middle" }, ax).textContent = t === 0 ? "0" : sg(t, 1);
+  el("text", { x: X(0) - 4, y: 34, "text-anchor": "end" }, ax).textContent = "further left = bigger drop in ratings";
+  host.append(h("div", { class: "ax" }, ax));
+}
+{
+  const c = $("cap3");
+  c.append(h("b", {}, "Figure 3: "), `It shows up in all ${AR.length} research areas. `,
+    h("span", { class: "m" }, `Rank correlation between AI score and average rating inside each primary area with 200+ papers; lines are 95% CIs. The number after each area is its paper count. Comparing papers only within their own area leaves the correlation unchanged (${sg(D.within_area.pearson)} vs ${sg(M.pearson)} overall), so topic mix doesn't explain it.`));
+}
+
+// ---------- limitations (kept short and honest: this is what replies will ask about)
+const LIM = [
+  ["It's a correlation, not a cause. ", "Rushed or weaker papers may lean harder on LLM writing, reviewers may mark down prose that sounds generated, or both. This data can't tell those apart."],
+  ["Across all papers the link is weak. ", `The overall rank correlation is ${sg(M.spearman)}, and the AI score explains about ${pct(M.r2, 0)} of the variation in ratings. Everything happens in the top ~40%; below that it's flat.`],
+  ["A detector score is not proof. ", `Most submissions score high (the median is ${f2(D.ms_summary.median)}), and no score says a specific paper was machine-written. Don't use this to accuse anyone.`],
+  ["Reviews can still change. ", `Ratings are a snapshot from ${when(D.snapshot)}, during the discussion period. Most papers have three reviews.`],
+];
+$("lim").replaceChildren(...LIM.map(([b, t]) => h("li", {}, h("b", {}, b), t)));
+
+// ---------- appendix
+{
+  const A = $("appx"), tbl = (head, rows) => {
+    const t = h("table", { class: "plain" }), tr = h("tr"); head.forEach(s => tr.append(h("th", {}, s)));
+    t.append(h("thead", {}, tr)); const b = h("tbody");
+    rows.forEach(r => { const row = h("tr"); r.forEach(c => row.append(h("td", {}, c))); b.append(row); }); t.append(b);
+    return h("div", { class: "tbl" }, t);
+  };
+  A.append(
+    h("h3", {}, "Data"),
+    h("p", { class: "small" }, "AI scores come from ", h("a", { href: "https://opentextdetector.com/?collection=iclr%2F2027&sort=score" }, "Open Text Detector"),
+      ` (all ${fmt(D.n_detector_fetched)} ICLR 2027 papers it lists, model ${D.flag_model}). The "AI score" is its average score: the mean per-sentence probability that a sentence in the paper's main body is AI-written, with references and appendix excluded. Review ratings come from `,
+      h("a", { href: "https://shiqiangw.github.io/iclr-2027-scores/" }, "ICLR 2027 Scores"),
+      `, which mirrors OpenReview and excludes withdrawn and desk-rejected papers. Papers were matched on OpenReview ID: ${fmt(D.n_joined)} papers and ${fmt(D.reviews)} reviews. Papers need at least ${D.min_sentences} scored sentences, the detector site's own minimum.`),
+    h("p", { class: "small" }, `"Top-10% cutoff" is an average rating of ${f2(D.top10_cutoff)} or more, the cutoff published on the scores site. Confidence intervals are bootstrap percentiles (2,000 resamples for the headline correlation).`),
+    h("h3", {}, "Robustness"),
+    h("p", { class: "small" }, "Every detector setting and rating summary points the same way. Negative means a higher AI score goes with a lower rating."),
+    tbl(["Comparison", "Papers", "Rank corr. (ρ)", "95% CI", "Pearson r"],
+      D.robustness.map(r => [h("span", {}, r.label, h("br"), h("span", { class: "note" }, r.note)), fmt(r.n), sg(r.spearman, 3), `${sg(r.spearman_ci[0], 3)} to ${sg(r.spearman_ci[1], 3)}`, sg(r.pearson, 3)])),
+    h("h3", {}, "By share of sentences flagged"),
+    h("p", { class: "small" }, `The detector site's headline number is the share of a paper's sentences flagged as AI at a 0.1% false-positive rate. ${pct(D.fs_summary.exactly100)} of papers have every sentence flagged; those are the ones that drop.`),
+    tbl(["Sentences flagged", "Papers", "Avg rating", "95% CI", "Top-10% cutoff"],
+      D.flag_bands.map(b => [b.label, fmt(b.n), f3(b.mean), `${f3(b.ci[0])}–${f3(b.ci[1])}`, pct(b.top10, 1)])),
+    h("h3", {}, "Figure 1 as a table"),
+    tbl(["Rank by AI score", "AI score", "Papers", "Avg rating", "95% CI", "Top-10% cutoff"],
+      V.map(v => [`${(v.k - 1) * 5}–${v.k * 5}%`, `${f3(v.lo)}–${f3(v.hi)}`, fmt(v.n), f3(v.mean), `${f3(v.ci[0])}–${f3(v.ci[1])}`, pct(v.top10, 1)])),
+    h("h3", {}, "Individual reviews by AI-score decile"),
+    tbl(["Decile", "Reviews", "1s", "2s", "3s", "4s"],
+      D.deciles.map(d => [`${d.k}`, fmt(d.n_reviews), pct(d.dist["1"], 1), pct(d.dist["2"], 1), pct(d.dist["3"], 1), pct(d.dist["4"], 1)])),
+    h("p", { class: "small", style: "margin-top:18px" }, "Crawl and analysis code: ", h("a", { href: REPO }, REPO.replace(/^https:\/\//, "")), ". This page shows group totals only; per-paper scores are on the two source sites.")
+  );
+}
+$("foot").textContent = `Built ${new Date(D.built_at).toLocaleDateString("en-US", { dateStyle: "medium" })} from public data. Not affiliated with ICLR, OpenReview, or either source site.`;
+
+// ---------- render (dark mode follows the device setting)
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => renderAll(false));
+function renderAll(animate) { fig1(animate); fig2(); fig3(); }
+const start = () => renderAll(true);
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(start);
+let rt, lastW = innerWidth;
+addEventListener("resize", () => { if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(rt); rt = setTimeout(() => renderAll(false), 120); });
+</script>
+</body>
+</html>
